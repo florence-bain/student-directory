@@ -1,21 +1,52 @@
-# We are asking the user for an input
+# Empty array to be accessed by all methods
+@students = []
+
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-#create an empty array to hold the input
-  students = []
-#get the first name
+  # get the first name
   name = gets.chomp
-#while the input is not empty keep asking for a name
+  # while the input is not empty keep asking for a name
   while !name.empty? do
-#add the student hash to the array
-  students << {name: name, cohort: :november}
-  puts "Now we have #{students.count} students"
-#asking for another name
+  # add the student hash to the array
+  @students << {name: name, cohort: :november}
+  puts "Now we have #{@students.count} students"
+  # asking for another name
   name = gets.chomp
   end 
-#returning the array of students
-students 
+end 
+
+def interactive_menu
+  loop do 
+    # Print the menu and ask the user what to do
+    print_menu
+    process(gets.chomp)
+  end 
+end 
+  
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit" # 9 because we'll be adding more items
+end 
+
+def show_students
+  print_header 
+  print_students_list
+  print_footer
+end 
+    #3 do what the user has asked 
+def process(selection)
+  case selection
+  when "1"
+    input_students
+  when "2"
+    show_students
+  when "9"
+    exit 
+  else 
+    puts "I don't know what you meant, please try again"
+  end 
 end 
 
 def print_header
@@ -23,18 +54,14 @@ def print_header
   puts "-------------"
 end
 
-def print(students)
-  students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)"
+def print_students_list
+  @students.each.with_index(1) do |student, index|
+    puts "#{index} #{student[:name]} (#{student[:cohort]} cohort)"
   end   
 end 
 
-def print_footer(names)
-  puts "Overall, we have #{names.count} great students"
+def print_footer
+  puts "Overall, we have #{@students.count} great students"
 end
 
-students = input_students
-#calling the methods 
-print_header 
-print(students)
-print_footer(students)
+interactive_menu
